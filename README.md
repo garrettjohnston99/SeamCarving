@@ -4,7 +4,7 @@ Garrett Johnston & Thanh Nguyen Jr
 
 This is a final project for CS73/273 at Dartmouth College, Fall 2020. We implemented the seam carving algorithm for resizing images.
 
-## Project sCredits
+## Project Credits
 
 Credits to the following resources which we based this project on:
 
