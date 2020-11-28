@@ -19,7 +19,16 @@ void testMarkPath() {
     colored.write(DATA_DIR "/output/daliColoredSeam.png");
 }
 
+void testRemoveN() {
+  FloatImage dali(DATA_DIR "/input/dali.jpg");
+
+  FloatImage res = removeNSeams(dali, 50, true);
+  res.write(DATA_DIR "/output/dali50.png");
+}
+
 int main() {
-  testMarkPath();
+  testMinPath();
+  //testMarkPath();
+  //testRemoveN();
 
 }

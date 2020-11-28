@@ -1,5 +1,6 @@
-
 #include "filtering.h"
+#include "SeamCarving.h"
+#include <sstream>
 
 FloatImage minPath(const FloatImage &im) {
     int width = im.width();
@@ -81,13 +82,14 @@ FloatImage removeSeam(const FloatImage &im) {
     FloatImage res(width, height, channels);
 
     // Copy all valid pixels(not -1) over to result
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            if (im(x, y) != -1.0f) {
+    for (int y = 0; y < height; y++) {
+        for (int imX = 0, resX = 0; imX < width; imX++) {
+            if (im(imX, y) != -1.0f) {
                 for (int c = 0; c < channels; c++) {
-                    res(x, y, c) = im(x, y, c);
+                    res(resX, y, c) = im(imX, y, c);
                 }
-            }
+                resX++;
+            } 
         }
     }
 
@@ -114,3 +116,26 @@ FloatImage markSeam(const FloatImage &im, const float r, const float g, const fl
 
     return res;
 }
+
+
+
+FloatImage removeNSeams(const FloatImage &im, int n, bool writeIntermediates) {
+    if (im.width() < n) throw NegativeDimensionException();
+
+    FloatImage curr(im);
+    for (int i = 0; i < n; i++) {
+        FloatImage path = minPath(curr);
+        
+        if (writeIntermediates) {
+            ostringstream ss;
+            ss << DATA_DIR "/output/" << i + 1 << ".png";
+            string filename = ss.str();
+            markSeam(path).write(filename); // replaces -1s with yellow
+        }
+        
+        curr = removeSeam(path);
+    }
+
+    return curr;
+}
+
