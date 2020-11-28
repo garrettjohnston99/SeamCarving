@@ -1,0 +1,6 @@
+/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build/CMakeFiles/rebuild_cache.dir
+/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build/CMakeFiles/edit_cache.dir
+/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build/CMakeFiles/SeamCarving.dir
+/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build/CMakeFiles/common_lib.dir
+/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build/src/ext/CMakeFiles/rebuild_cache.dir
+/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build/src/ext/CMakeFiles/edit_cache.dir

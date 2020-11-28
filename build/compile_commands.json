@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build",
+  "command": "/usr/bin/clang++ -DDATA_DIR=\"R\\\"(/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/data)\\\"\" -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/ext -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/ext/stb  -Wall -Wextra -Wno-unused-parameter -Wno-ignored-attributes -Wno-gnu-anonymous-struct -Wno-c99-extensions -Wno-nested-anon-types -Wno-deprecated-register -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -std=c++11 -o CMakeFiles/SeamCarving.dir/src/SeamCarving_main.cpp.o -c /Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/SeamCarving_main.cpp",
+  "file": "/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/SeamCarving_main.cpp"
+},
+{
+  "directory": "/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build",
+  "command": "/usr/bin/clang++ -DDATA_DIR=\"R\\\"(/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/data)\\\"\" -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/ext -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/ext/stb  -Wall -Wextra -Wno-unused-parameter -Wno-ignored-attributes -Wno-gnu-anonymous-struct -Wno-c99-extensions -Wno-nested-anon-types -Wno-deprecated-register -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -std=c++11 -o CMakeFiles/SeamCarving.dir/src/filtering.cpp.o -c /Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/filtering.cpp",
+  "file": "/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/filtering.cpp"
+},
+{
+  "directory": "/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build",
+  "command": "/usr/bin/clang++ -DDATA_DIR=\"R\\\"(/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/data)\\\"\" -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/ext -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/ext/stb  -Wall -Wextra -Wno-unused-parameter -Wno-ignored-attributes -Wno-gnu-anonymous-struct -Wno-c99-extensions -Wno-nested-anon-types -Wno-deprecated-register -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -std=c++11 -o CMakeFiles/SeamCarving.dir/src/a2.cpp.o -c /Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/a2.cpp",
+  "file": "/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/a2.cpp"
+},
+{
+  "directory": "/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/build",
+  "command": "/usr/bin/clang++ -DDATA_DIR=\"R\\\"(/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/data)\\\"\" -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/ext -I/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/ext/stb  -Wall -Wextra -Wno-unused-parameter -Wno-ignored-attributes -Wno-gnu-anonymous-struct -Wno-c99-extensions -Wno-nested-anon-types -Wno-deprecated-register -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -std=c++11 -o CMakeFiles/common_lib.dir/src/floatimage.cpp.o -c /Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/floatimage.cpp",
+  "file": "/Users/garrettjohnston/Desktop/Dartmouth/20F/COSC73/SeamCarving/src/floatimage.cpp"
+}
+]
