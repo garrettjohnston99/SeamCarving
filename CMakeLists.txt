@@ -32,7 +32,7 @@ add_library(common_lib STATIC
 SOURCE_GROUP("src\\ext\\stb" FILES ${ext_stb_srcs})
 
 # dependencies for SeamCarving_main.cpp
-set(SeamCarving_srcs   src/SeamCarving_main.cpp src/filtering.cpp src/a2.cpp)   # SeamCarving
+set(SeamCarving_srcs   src/SeamCarving_main.cpp src/filtering.cpp src/SeamCarving.cpp src/a2.cpp)   # SeamCarving
 add_executable(SeamCarving ${SeamCarving_srcs})                                 # SeamCarving
 target_link_libraries(SeamCarving common_lib)                                   # SeamCarving
 SOURCE_GROUP("src" FILES ${SeamCarving_srcs})                                   # SeamCarving
