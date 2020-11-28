@@ -7,6 +7,7 @@ FloatImage minPath(const FloatImage &im) {
     int channels = im.channels();
 
     FloatImage energy = gradientMagnitude(im);
+    energy.write(DATA_DIR "/output/energy.png");
     FloatImage dp(width, height, 1);
 
     // Fill in bottom row of dp with bottom row of energy
@@ -41,13 +42,13 @@ FloatImage minPath(const FloatImage &im) {
     }
 
     // Now find the minimum seam starting at (minX, 0)
-    // Potentially mark the removed pixels as -1 in a copy of the given image for easier removal?
-    FloatImage copy(im);
+    FloatImage res(im);
     int x = minX;
     for (int c = 0; c < channels; c++) {
-        copy(x, 0, c) = -1;
+        res(x, 0, c) = -1;
     }
 
+    // Find the minimum seam, marking pixels in the seam with -1
     for (int y = 0; y < height - 1; y++) {
         float leftCost = x == 0 ? __FLT_MAX__ : dp(x - 1, y + 1);
         float middleCost = dp(x, y + 1);
@@ -62,10 +63,54 @@ FloatImage minPath(const FloatImage &im) {
 
         // Mark as part of minimum energy seam
         for (int c = 0; c < channels; c++) {
-            copy(x, y + 1, c) = -1;
+            res(x, y + 1, c) = -1;
         }
     }
     
+    return res;
+}
 
-    return copy;
+
+// Assumes that im is an image that has had a seam marked using minPath
+// Removes the seam, returning an image with dimensions (im.width() - 1, im.height(), im.channels())
+FloatImage removeSeam(const FloatImage &im) {
+    int width = im.width() - 1;
+    int height = im.height();
+    int channels = im.channels();
+    
+    FloatImage res(width, height, channels);
+
+    // Copy all valid pixels(not -1) over to result
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            if (im(x, y) != -1.0f) {
+                for (int c = 0; c < channels; c++) {
+                    res(x, y, c) = im(x, y, c);
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
+
+// Assumes that im is an image that has had a seam marked using minPath
+// Marks the seam with given rgb color, defaults to yellow
+FloatImage markSeam(const FloatImage &im, const float r, const float g, const float b) {
+    int width = im.width();
+    int height = im.height();
+
+    FloatImage res(im);
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            if (res(x, y) == -1.0f) {
+                res(x, y, 0) = r;
+                res(x, y, 1) = g;
+                res(x, y, 2) = b;
+            }
+        }
+    }
+
+    return res;
 }
