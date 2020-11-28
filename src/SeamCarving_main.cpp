@@ -1,3 +1,10 @@
+/* 
+ * Test driver for functions in SeamCarving.cpp
+ *
+ * Garrett Johnston & Thanh Nguyen, CS73 20F
+ */
+
+
 #include "SeamCarving.h"
 #include "filtering.h"
 #include "utils.h"

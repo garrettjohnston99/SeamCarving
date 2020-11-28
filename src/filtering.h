@@ -37,29 +37,7 @@ private:
     
 };
 
-// Box Blurring
-FloatImage boxBlur(const FloatImage &im, const int &k, bool clamp=true);
-FloatImage boxBlur_filterClass(const FloatImage &im, const int &k, bool clamp=true);
-
 // Gradient Filter
 FloatImage gradientMagnitude(const FloatImage &im, bool clamp=true);
 
-// Gaussian Blurring
-vector<float> gauss1DFilterValues(float sigma, float truncate);
-vector<float> gauss2DFilterValues(float sigma, float truncate);
-FloatImage gaussianBlur_horizontal(const FloatImage &im, float sigma, float truncate=3.0, bool clamp=true);
-FloatImage gaussianBlur_seperable(const FloatImage &im, float sigma, float truncate=3.0, bool clamp=true);
-FloatImage gaussianBlur_2D(const FloatImage &im, float sigma, float truncate=3.0, bool clamp=true);
-
-// Sharpen an FloatImage
-FloatImage unsharpMask(const FloatImage &im, float sigma, float truncate=3.0, float strength=1.0, bool clamp=true);
-
-// Bilaterial Filtering
-FloatImage bilateral(const FloatImage &im, float sigmaRange=0.1, float sigmaDomain=1.0, float truncateDomain=3.0, bool clamp=true);
-FloatImage bilaYUV(const FloatImage &im, float sigmaRange=0.1, float sigmaY=1.0, float sigmaUV=4.0, float truncateDomain=3.0, bool clamp=true);
-
-// Return impulse image of size kxkx1
-FloatImage impulseImg(const int &k);
-
- 
 #endif

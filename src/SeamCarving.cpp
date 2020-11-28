@@ -1,3 +1,11 @@
+/* 
+ * Functions for seam carving(content-aware image resizing)
+ * See SeamCarving.h for documentation
+ * 
+ * Garrett Johnston & Thanh Nguyen, CS73 20F
+ */
+
+
 #include "filtering.h"
 #include "SeamCarving.h"
 #include <sstream>
@@ -250,7 +258,7 @@ FloatImage markSeam(const FloatImage &im, const float r, const float g, const fl
 
 FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam, bool writeIntermediates)
 {
-    if (verticalSeam && im.width() < n || !verticalSeam && im.height() < n)
+    if ((verticalSeam && im.width() < n) || (!verticalSeam && im.height() < n))
         throw NegativeDimensionException();
 
     FloatImage curr(im);
