@@ -32,15 +32,14 @@ void testMarkPath()
   FloatImage test(DATA_DIR "/input/dali.jpg");
 
   FloatImage marked = minPathVert(test);
-  FloatImage colored = markSeam(marked);
-  colored.write(DATA_DIR "/output/daliColoredSeam.png");
+  marked.write(DATA_DIR "/output/daliColoredSeam.png");
 }
 
 void testRemoveNVert()
 {
   FloatImage dali(DATA_DIR "/input/dali.jpg");
 
-  FloatImage res = removeNSeams(dali, 50, true, true);
+  FloatImage res = removeNSeams(dali, 50, true);
   res.write(DATA_DIR "/output/dali50.png");
 }
 
