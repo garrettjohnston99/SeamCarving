@@ -38,3 +38,9 @@ class MismatchedSizeException : public std::runtime_error
 public:
 	MismatchedSizeException() : std::runtime_error("Vectors must have the same size") {}
 };
+
+class DimensionSizeException : public std::runtime_error
+{
+public:
+	DimensionSizeException() : std::runtime_error("New dimensions must be smaller than or equal to original image dimensions.") {}
+};
