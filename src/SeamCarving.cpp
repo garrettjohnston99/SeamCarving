@@ -5,7 +5,6 @@
  * Garrett Johnston & Thanh Nguyen, CS73 20F
  */
 
-
 #include "filtering.h"
 #include "SeamCarving.h"
 #include <sstream>
@@ -134,7 +133,6 @@ FloatImage minPathHorizontal(const FloatImage &im)
             }
         }
     }
-
     // Find y-coordinate of minimum value on left-most column of dp for tracking minimum energy seam
     int minY;
     int topMin = INT_MAX;
@@ -143,7 +141,7 @@ FloatImage minPathHorizontal(const FloatImage &im)
         if (dp(0, y) < topMin)
         {
             minY = y;
-            topMin = dp(y, 0);
+            topMin = dp(0, y);
         }
     }
 
@@ -178,7 +176,6 @@ FloatImage minPathHorizontal(const FloatImage &im)
             res(x + 1, y, c) = -1;
         }
     }
-
     return res;
 }
 
@@ -278,4 +275,15 @@ FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam, bool wri
     }
 
     return curr;
+}
+
+FloatImage retargetImage(const FloatImage &im, int newWidth, int newHeight, bool writeIntermediates)
+{
+    if (newWidth < 0 || newHeight < 0)
+        throw NegativeDimensionException();
+    if (newWidth > im.width() || newHeight > im.height())
+        throw DimensionSizeException();
+
+    FloatImage shrinkWidth = removeNSeams(im, im.width() - newWidth, true, writeIntermediates);
+    return removeNSeams(shrinkWidth, shrinkWidth.height() - newHeight, false, writeIntermediates);
 }
