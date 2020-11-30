@@ -30,6 +30,10 @@ using namespace std;
 // components of the gradient of an image and returns the gradient magnitude.
 FloatImage gradientMagnitude(const FloatImage &im, bool clamp)
 {
+	int width = im.width(); 
+	int height = im.height();
+	int channels = im.channels();
+
 	// sobel filtering in x direction
 	Filter sobelX(3, 3);
 	sobelX(0, 0) = -1.0;
@@ -61,13 +65,19 @@ FloatImage gradientMagnitude(const FloatImage &im, bool clamp)
 	// squared magnitude
 	FloatImage magnitude = imSobelX * imSobelX + imSobelY * imSobelY;
 
+	FloatImage res(im.width(), im.height(), 1);
 	// take the square root
-	for (int i = 0; i < magnitude.size(); i++)
-	{
-		magnitude(i) = sqrt(magnitude(i));
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			for (int c = 0; c < channels; c++) {
+				res(x, y) += magnitude(x, y, c);
+			}
+
+			res(x, y) = sqrt(res(x, y));
+		}
 	}
 
-	return magnitude;
+	return res;
 }
 
 /**************************************************************

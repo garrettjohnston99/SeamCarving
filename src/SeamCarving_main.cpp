@@ -71,11 +71,18 @@ void testRetargetImage()
   res.write(DATA_DIR "/output/daliRetargeted.png");
 }
 
+void trimIdiots() {
+  FloatImage idiots(DATA_DIR "/input/dali.JPG");
+  FloatImage trimmed = removeNSeams(idiots, 1, true, true, false);
+  trimmed.write(DATA_DIR "/output/daliTrimmed100.png");
+}
+
 int main()
 {
   //testMinPathHorizontal();
   //testMinPathVert();
-  testRemoveNVert();
-  testRemoveNHorizontal();
+  //testRemoveNVert();
+  //testRemoveNHorizontal();
   //testRetargetImage();
+  trimIdiots();
 }
