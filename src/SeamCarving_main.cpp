@@ -65,12 +65,12 @@ void testRetargetImage()
 
 void forwardEnergyExamples()
 {
-  FloatImage im("data/input/frances-gunn-5k03gTCaEW0-unsplash.jpg");
+  FloatImage im("data/input/meadow.jpg");
 
-  FloatImage res1 = removeNSeams(im, 70, true, false, true);
+  FloatImage res1 = removeNSeams(im, 50, true, false, true);
   res1.write(DATA_DIR "/output/exampleForwardEnergy.png");
 
-  FloatImage res2 = removeNSeams(im, 70, true, false, false);
+  FloatImage res2 = removeNSeams(im, 50, true, false, false);
   res2.write(DATA_DIR "/output/exampleNoForwardEnergy.png");
 }
 
@@ -81,11 +81,13 @@ void starryNightEnergy()
   FloatImage energy = gradientMagnitude(im);
   energy.write(DATA_DIR "/output/starryNightEnergy.png");
 }
-void trimIdiots()
+
+void removeNVertExample()
 {
-  FloatImage idiots(DATA_DIR "/input/dali.JPG");
-  FloatImage trimmed = removeNSeams(idiots, 1, true, true, false);
-  trimmed.write(DATA_DIR "/output/daliTrimmed100.png");
+  FloatImage im("data/input/dali.jpg");
+
+  FloatImage res = removeNSeams(im, 150, true, false, true);
+  res.write(DATA_DIR "/output/removeNVertExample.png");
 }
 
 int main()
@@ -95,7 +97,7 @@ int main()
   //testRemoveNVert();
   //testRemoveNHorizontal();
   //testRetargetImage();
-  //forwardEnergyExamples();
-  starryNightEnergy();
-  trimIdiots();
+  forwardEnergyExamples();
+  //starryNightEnergy();
+  //removeNVertExample();
 }
