@@ -31,8 +31,7 @@ void testMarkPath()
   FloatImage test(DATA_DIR "/input/dali.jpg");
 
   FloatImage marked = minPathVert(test);
-  FloatImage colored = markSeam(marked);
-  colored.write(DATA_DIR "/output/daliColoredSeam.png");
+  marked.write(DATA_DIR "/output/daliColoredSeam.png");
 }
 
 void testRemoveNVert()
@@ -76,7 +75,6 @@ int main()
 {
   //testMinPathHorizontal();
   //testMinPathVert();
-  //testMarkPath();
   testRemoveNVert();
   testRemoveNHorizontal();
   //testRetargetImage();

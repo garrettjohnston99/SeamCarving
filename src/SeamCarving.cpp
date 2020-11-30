@@ -23,7 +23,6 @@ FloatImage minPathVert(const FloatImage &im, bool applyForwardEnergy)
 {
     int width = im.width();
     int height = im.height();
-    int channels = im.channels();
 
     FloatImage energy = gradientMagnitude(im);
     energy.write(DATA_DIR "/output/energy.png");
@@ -98,10 +97,9 @@ FloatImage minPathVert(const FloatImage &im, bool applyForwardEnergy)
     // Now find the minimum seam starting at (minX, 0)
     FloatImage res(im);
     int x = minX;
-    for (int c = 0; c < channels; c++)
-    {
-        res(x, 0, c) = -1;
-    }
+    res(x, 0, 0) = 1.0f;
+    res(x, 0, 1) = 1.0f;
+    res(x, 0, 2) = -1.0f;
 
     // Find the minimum seam, marking pixels in the seam with -1
     for (int y = 0; y < height - 1; y++)
@@ -120,11 +118,10 @@ FloatImage minPathVert(const FloatImage &im, bool applyForwardEnergy)
             x++;
         }
 
-        // Mark as part of minimum energy seam
-        for (int c = 0; c < channels; c++)
-        {
-            res(x, y + 1, c) = -1;
-        }
+        // Mark as part of minimum energy seam.
+        res(x, y + 1, 0) = 1.0f;
+        res(x, y + 1, 1) = 1.0f;
+        res(x, y + 1, 2) = -1.0f;
     }
 
     return res;
@@ -134,7 +131,6 @@ FloatImage minPathHorizontal(const FloatImage &im, bool applyForwardEnergy)
 {
     int width = im.width();
     int height = im.height();
-    int channels = im.channels();
 
     FloatImage energy = gradientMagnitude(im);
     //energy.write(DATA_DIR "/output/energy.png");
@@ -209,10 +205,9 @@ FloatImage minPathHorizontal(const FloatImage &im, bool applyForwardEnergy)
     // Now find the minimum seam starting at (0, minY)
     FloatImage res(im);
     int y = minY;
-    for (int c = 0; c < channels; c++)
-    {
-        res(0, y, c) = -1;
-    }
+    res(0, y, 0) = 1.0f;
+    res(0, y, 1) = 1.0f;
+    res(0, y, 2) = -1.0f;
 
     // Find the minimum seam, marking pixels in the seam with -1
     for (int x = 0; x < width - 1; x++)
@@ -232,10 +227,9 @@ FloatImage minPathHorizontal(const FloatImage &im, bool applyForwardEnergy)
         }
 
         // Mark as part of minimum energy seam
-        for (int c = 0; c < channels; c++)
-        {
-            res(x + 1, y, c) = -1;
-        }
+        res(x + 1, y, 0) = 1.0f;
+        res(x + 1, y, 1) = 1.0f;
+        res(x + 1, y, 2) = -1.0f;
     }
     return res;
 }
@@ -258,7 +252,7 @@ FloatImage removeSeam(const FloatImage &im, bool vertSeam)
         {
             for (int imX = 0, resX = 0; imX < width; imX++)
             {
-                if (im(imX, y) != -1.0f)
+                if (im(imX, y, 2) != -1.0f)
                 {
                     for (int c = 0; c < channels; c++)
                     {
@@ -275,7 +269,7 @@ FloatImage removeSeam(const FloatImage &im, bool vertSeam)
         {
             for (int imY = 0, resY = 0; imY < height; imY++)
             {
-                if (im(x, imY) != -1.0f)
+                if (im(x, imY, 2) != -1.0f)
                 {
                     for (int c = 0; c < channels; c++)
                     {
@@ -292,28 +286,6 @@ FloatImage removeSeam(const FloatImage &im, bool vertSeam)
 
 // Assumes that im is an image that has had a seam marked using minPath
 // Marks the seam with given rgb color, defaults to yellow
-FloatImage markSeam(const FloatImage &im, const float r, const float g, const float b)
-{
-    int width = im.width();
-    int height = im.height();
-
-    FloatImage res(im);
-    for (int x = 0; x < width; x++)
-    {
-        for (int y = 0; y < height; y++)
-        {
-            if (res(x, y) == -1.0f)
-            {
-                res(x, y, 0) = r;
-                res(x, y, 1) = g;
-                res(x, y, 2) = b;
-            }
-        }
-    }
-
-    return res;
-}
-
 FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam, bool writeIntermediates, bool applyForwardEnergy)
 {
     if ((verticalSeam && im.width() < n) || (!verticalSeam && im.height() < n))
@@ -331,7 +303,7 @@ FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam, bool wri
             ostringstream ss;
             ss << DATA_DIR "/output/" << i + 1 << ".png";
             string filename = ss.str();
-            markSeam(path).write(filename); // replaces -1s with yellow
+            path.write(filename);
         }
 
         curr = removeSeam(path, verticalSeam);
@@ -340,13 +312,13 @@ FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam, bool wri
     return curr;
 }
 
-FloatImage retargetImage(const FloatImage &im, int newWidth, int newHeight, bool writeIntermediates)
+FloatImage retargetImage(const FloatImage &im, int newWidth, int newHeight, bool writeIntermediates, bool applyForwardEnergy)
 {
     if (newWidth < 0 || newHeight < 0)
         throw NegativeDimensionException();
     if (newWidth > im.width() || newHeight > im.height())
         throw DimensionSizeException();
 
-    FloatImage shrinkWidth = removeNSeams(im, im.width() - newWidth, true, writeIntermediates);
-    return removeNSeams(shrinkWidth, shrinkWidth.height() - newHeight, false, writeIntermediates);
+    FloatImage shrinkWidth = removeNSeams(im, im.width() - newWidth, true, writeIntermediates, applyForwardEnergy);
+    return removeNSeams(shrinkWidth, shrinkWidth.height() - newHeight, false, writeIntermediates, applyForwardEnergy);
 }
