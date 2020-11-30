@@ -4,7 +4,6 @@
  * Garrett Johnston & Thanh Nguyen, CS73 20F
  */
 
-
 #include "SeamCarving.h"
 #include "filtering.h"
 #include "utils.h"
@@ -47,8 +46,16 @@ void testRemoveNHorizontal()
 {
   FloatImage dali(DATA_DIR "/input/dali.jpg");
 
-  FloatImage res = removeNSeams(dali, 50, false, true);
+  FloatImage res = removeNSeams(dali, 71, false, true);
   res.write(DATA_DIR "/output/dali50.png");
+}
+
+void testRetargetImage()
+{
+  FloatImage dali(DATA_DIR "/input/dali.jpg");
+
+  FloatImage res = retargetImage(dali, 200, 200, false);
+  res.write(DATA_DIR "/output/daliRetargeted.png");
 }
 
 int main()
