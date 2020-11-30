@@ -10,6 +10,7 @@ Credits to the following resources which we based this project on:
 
 1. [Seam Carving | Week 2 | 18.S191 MIT Fall 2020 | Grant Sanderson](https://www.youtube.com/watch?v=rpB6zQNsbQU&ab_channel=TheJuliaProgrammingLanguage)
 2. [Brown University cs129](http://cs.brown.edu/courses/cs129/results/proj3/taox/)
+3. [Improved seam carving with forward energy](https://avikdas.com/2019/07/29/improved-seam-carving-with-forward-energy.html)
 
 Much of the basecode comes from assignment 4 from this class. See the course [website](https://canvas.dartmouth.edu/courses/43075) for details.
 

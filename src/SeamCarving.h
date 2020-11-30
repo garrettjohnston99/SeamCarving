@@ -7,6 +7,12 @@
 #include "floatimage.h"
 #include "exceptions.h"
 
+/*
+ * pixelDiff: takes a FloatImage im, and 2 coordinates pairs, x1, y1, x2, y2
+ * and returns the squared difference between the channel values of the pixels at the designated coordinates.
+ */
+float pixelDiff(const FloatImage &im, int x1, int y1, int x2, int y2);
+
 /* 
  * minPathVert: takes a FloatImage im, returning a FloatImage with a vertical seam with G channel marked -1
  * When displayed, the returned FloatImage highlights the seam in yellow.
@@ -14,7 +20,7 @@
  * The seam varies horizontally by at most one pixel from the pixel above/below
  * To remove the seam, see removeSeam. 
  */
-FloatImage minPathVert(const FloatImage &im);
+FloatImage minPathVert(const FloatImage &im, bool applyForwardEnergy = true);
 
 /* 
  * minPathVert: takes a FloatImage im, returning a FloatImage with a horizontal seam with G channel marked -1
@@ -23,7 +29,7 @@ FloatImage minPathVert(const FloatImage &im);
  * The seam varies vertically by at most one pixel from the pixel to the left/right
  * To remove the seam, see removeSeam.
  */
-FloatImage minPathHorizontal(const FloatImage &im);
+FloatImage minPathHorizontal(const FloatImage &im, bool applyForwardEnergy = true);
 
 /* 
  * removeSeam: takes a FloatImage im and bool vertSeam, returning a FloatImage with the seam removed
@@ -39,7 +45,7 @@ FloatImage removeSeam(const FloatImage &im, bool vertSeam = true);
  * Throws NegativeDimensionException if n is greater than the number of pixels on the relevant axis
  * If writeIntermediates is true, saves images produced by markSeam on each iteration
  */
-FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam = true, bool writeIntermediates = false);
+FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam = true, bool writeIntermediates = false, bool applyForwardEnergy = true);
 
 /*
  * retargetImage: takes a FloatImage im, integer newWidth, integer newHeight, and boolean writeIntermediates, and
@@ -48,4 +54,4 @@ FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam = true, b
  * Throws NegativeDimensionException if width or height are negative.
  * If writeIntermediates is true, saves images produced by markSeam on each iteration.
  */
-FloatImage retargetImage(const FloatImage &im, int newWidth, int newHeight, bool writeIntermediates = false);
+FloatImage retargetImage(const FloatImage &im, int newWidth, int newHeight, bool writeIntermediates = false, bool applyForwardEnergy = true);
