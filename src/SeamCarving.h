@@ -7,13 +7,19 @@
 #include "floatimage.h"
 #include "exceptions.h"
 
+/*
+ * pixelDiff: takes a FloatImage im, and 2 coordinates pairs, x1, y1, x2, y2
+ * and returns the squared difference between the channel values of the pixels at the designated coordinates.
+ */
+float pixelDiff(const FloatImage &im, int x1, int y1, int x2, int y2);
+
 /* 
  * minPathVert: takes a FloatImage im, returning a FloatImage with a vertical seam marked with -1s
  * Uses gradientMagnitude and dynamic programming to find the minimum "cost" from top-bottom of the image
  * The seam varies horizontally by at most one pixel from the pixel above/below
  * To remove the seam, see removeSeam. To mark the seam with a color, see markSeam
  */
-FloatImage minPathVert(const FloatImage &im);
+FloatImage minPathVert(const FloatImage &im, bool applyForwardEnergy = true);
 
 /* 
  * minPathVert: takes a FloatImage im, returning a FloatImage with a horizontal seam marked with -1s
@@ -21,7 +27,7 @@ FloatImage minPathVert(const FloatImage &im);
  * The seam varies vertically by at most one pixel from the pixel to the left/right
  * To remove the seam, see removeSeam. To mark the seam with a color, see markSeam
  */
-FloatImage minPathHorizontal(const FloatImage &im);
+FloatImage minPathHorizontal(const FloatImage &im, bool applyForwardEnergy = true);
 
 /* 
  * removeSeam: takes a FloatImage im and bool vertSeam, returning a FloatImage with the seam removed
@@ -44,7 +50,7 @@ FloatImage markSeam(const FloatImage &im, const float r = 1.0f, const float g = 
  * Throws NegativeDimensionException if n is greater than the number of pixels on the relevant axis
  * If writeIntermediates is true, saves images produced by markSeam on each iteration
  */
-FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam = true, bool writeIntermediates = false);
+FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam = true, bool writeIntermediates = false, bool applyForwardEnergy = true);
 
 /*
  * retargetImage: takes a FloatImage im, integer newWidth, integer newHeight, and boolean writeIntermediates, and

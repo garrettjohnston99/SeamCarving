@@ -9,7 +9,17 @@
 #include "SeamCarving.h"
 #include <sstream>
 
-FloatImage minPathVert(const FloatImage &im)
+float pixelDiff(const FloatImage &im, int x1, int y1, int x2, int y2)
+{
+    float diff = 0.0f;
+    for (int c = 0; c < im.channels(); c++)
+    {
+        diff += pow(im(x1, y1, c) - im(x2, y2, c), 2);
+    }
+    return diff;
+}
+
+FloatImage minPathVert(const FloatImage &im, bool applyForwardEnergy)
 {
     int width = im.width();
     int height = im.height();
@@ -20,30 +30,55 @@ FloatImage minPathVert(const FloatImage &im)
     FloatImage dp(width, height, 1);
 
     // Fill in bottom row of dp with bottom row of energy
+    // add forward energy if necessary
     for (int x = 0; x < width; x++)
     {
-        dp(x, height - 1) = energy(x, height - 1);
+        if (x != 0 && x != width - 1)
+        {
+            dp(x, height - 1) =
+                applyForwardEnergy
+                    ? energy(x, height - 1) + pixelDiff(im, x - 1, height - 1, x + 1, height - 1)
+                    : energy(x, height - 1);
+        }
+        else
+        {
+            dp(x, height - 1) = energy(x, height - 1);
+        }
     }
 
     // Now fill in dp bottom-up
     // Each dp(x, y) is equal to energy(x, y) plus the minimum value below (x, y) in dp
     // Considering the three pixels below it - (x - 1, y + 1), (x, y + 1), (x + 1, y + 1)
+    // apply forward energy if necessary
     for (int y = height - 2; y >= 0; y--)
     {
         for (int x = 0; x < width; x++)
         {
             if (x == 0)
             {
-                dp(x, y) = energy(x, y) + min(dp(x, y + 1), dp(x + 1, y + 1));
+                dp(x, y) = applyForwardEnergy
+                               ? energy(x, y) + min(dp(x, y + 1), dp(x + 1, y + 1) + pixelDiff(im, x + 1, y, x, y + 1))
+                               : energy(x, y) + min(dp(x, y + 1), dp(x + 1, y + 1));
             }
             else if (x == width - 1)
             {
-                dp(x, y) = energy(x, y) + min(dp(x, y + 1), dp(x - 1, y + 1));
+                dp(x, y) = applyForwardEnergy
+                               ? energy(x, y) + min(dp(x, y + 1), dp(x - 1, y + 1) + pixelDiff(im, x - 1, y, x, y + 1))
+                               : energy(x, y) + min(dp(x, y + 1), dp(x - 1, y + 1));
             }
             else
             {
-                dp(x, y) = energy(x, y) + min(dp(x, y + 1),
-                                              min(dp(x - 1, y + 1), dp(x + 1, y + 1)));
+                dp(x, y) = applyForwardEnergy
+                               ? energy(x, y) + min(dp(x, y + 1) + pixelDiff(im, x - 1, y, x + 1, y),
+                                                    min(
+                                                        dp(x - 1, y + 1) +
+                                                            pixelDiff(im, x - 1, y, x, y + 1) +
+                                                            pixelDiff(im, x - 1, y, x + 1, y),
+                                                        dp(x + 1, y + 1) +
+                                                            pixelDiff(im, x + 1, y, x, y + 1) +
+                                                            pixelDiff(im, x - 1, y, x + 1, y)))
+                               : energy(x, y) + min(dp(x, y + 1),
+                                                    min(dp(x - 1, y + 1), dp(x + 1, y + 1)));
             }
         }
     }
@@ -95,7 +130,7 @@ FloatImage minPathVert(const FloatImage &im)
     return res;
 }
 
-FloatImage minPathHorizontal(const FloatImage &im)
+FloatImage minPathHorizontal(const FloatImage &im, bool applyForwardEnergy)
 {
     int width = im.width();
     int height = im.height();
@@ -106,30 +141,56 @@ FloatImage minPathHorizontal(const FloatImage &im)
     FloatImage dp(width, height, 1);
 
     // Fill in right-most column of dp with right-most column of energy
+    // add forward energy if necessary
     for (int y = 0; y < height; y++)
     {
-        dp(width - 1, y) = energy(width - 1, y);
+        if (y != 0 && y != height - 1)
+        {
+            dp(width - 1, y) =
+                applyForwardEnergy
+                    ? energy(width - 1, y + 1) + pixelDiff(im, width - 1, y - 1, width - 1, y + 1)
+                    : energy(width - 1, y);
+        }
+        else
+        {
+            dp(width - 1, y) = energy(width - 1, y);
+        }
     }
 
     // Now fill in dp column by columm from right to left
     // Each dp(x, y) is equal to energy(x, y) plus the minimum value to the right (x, y) in dp
     // Considering the three pixels to the right: (x + 1, y - 1), (x + 1, y), (x + 1, y + 1)
+    // apply forward energy if necessary
     for (int x = width - 2; x >= 0; x--)
     {
         for (int y = 0; y < height; y++)
         {
             if (y == 0)
             {
-                dp(x, y) = energy(x, y) + min(dp(x + 1, y), dp(x + 1, y + 1));
+                dp(x, y) = applyForwardEnergy
+                               ? energy(x, y) + min(dp(x + 1, y), dp(x + 1, y + 1) + pixelDiff(im, x + 1, y, x, y + 1))
+                               : energy(x, y) + min(dp(x + 1, y), dp(x + 1, y + 1));
             }
             else if (y == height - 1)
             {
-                dp(x, y) = energy(x, y) + min(dp(x + 1, y), dp(x + 1, y - 1));
+                dp(x, y) = applyForwardEnergy
+                               ? energy(x, y) + min(dp(x + 1, y), dp(x + 1, y - 1) + pixelDiff(im, x + 1, y, x, y - 1))
+                               : energy(x, y) + min(dp(x + 1, y), dp(x + 1, y - 1));
             }
             else
             {
-                dp(x, y) = energy(x, y) + min(dp(x + 1, y - 1),
-                                              min(dp(x + 1, y), dp(x + 1, y + 1)));
+                dp(x, y) = applyForwardEnergy
+                               ? energy(x, y) + min(dp(x + 1, y - 1) +
+                                                        pixelDiff(im, x + 1, y, x, y - 1) +
+                                                        pixelDiff(im, x, y - 1, x, y + 1),
+                                                    min(
+                                                        dp(x + 1, y) +
+                                                            pixelDiff(im, x, y - 1, x, y + 1),
+                                                        dp(x + 1, y + 1) +
+                                                            pixelDiff(im, x + 1, y, x, y + 1) +
+                                                            pixelDiff(im, x, y - 1, x, y + 1)))
+                               : energy(x, y) + min(dp(x + 1, y - 1),
+                                                    min(dp(x + 1, y), dp(x + 1, y + 1)));
             }
         }
     }
@@ -253,7 +314,7 @@ FloatImage markSeam(const FloatImage &im, const float r, const float g, const fl
     return res;
 }
 
-FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam, bool writeIntermediates)
+FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam, bool writeIntermediates, bool applyForwardEnergy)
 {
     if ((verticalSeam && im.width() < n) || (!verticalSeam && im.height() < n))
         throw NegativeDimensionException();
@@ -261,7 +322,9 @@ FloatImage removeNSeams(const FloatImage &im, int n, bool verticalSeam, bool wri
     FloatImage curr(im);
     for (int i = 0; i < n; i++)
     {
-        FloatImage path = verticalSeam ? minPathVert(curr) : minPathHorizontal(curr);
+        FloatImage path = verticalSeam
+                              ? minPathVert(curr, applyForwardEnergy)
+                              : minPathHorizontal(curr, applyForwardEnergy);
 
         if (writeIntermediates)
         {
