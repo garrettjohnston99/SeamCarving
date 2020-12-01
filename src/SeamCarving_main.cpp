@@ -16,6 +16,10 @@ void testMinPathVert()
 
   FloatImage out = minPathVert(test);
   out.write(DATA_DIR "/output/daliOutVert.png");
+
+  FloatImage test2("data/input/minPathTestIn.png");
+  FloatImage out2 = minPathVert(test2);
+  out2.write(DATA_DIR "/output/minPathTestOut.png");
 }
 
 void testMinPathHorizontal()
@@ -43,14 +47,6 @@ void testRemoveNVert()
 
   FloatImage res2 = removeNSeams(dali, 50, true, true, false);
   res2.write(DATA_DIR "/output/dali50VertNoForwardEnergy.png");
-
-  FloatImage meadow(DATA_DIR "/input/greenMeadow.jpg");
-
-  FloatImage res3 = removeNSeams(meadow, 50, true, true, true);
-  res3.write(DATA_DIR "/output/greenMeadow50VertForwardEnergy.png");
-
-  FloatImage res4 = removeNSeams(meadow, 50, true, true, false);
-  res4.write(DATA_DIR "/output/greenMeadow50VertNoForwardEnergy.png");
 }
 
 void testRemoveNHorizontal()
@@ -71,18 +67,41 @@ void testRetargetImage()
   res.write(DATA_DIR "/output/daliRetargeted.png");
 }
 
-void trimIdiots() {
-  FloatImage idiots(DATA_DIR "/input/dali.JPG");
-  FloatImage trimmed = removeNSeams(idiots, 1, true, true, false);
-  trimmed.write(DATA_DIR "/output/daliTrimmed100.png");
+void forwardEnergyExamples()
+{
+  FloatImage im("data/input/meadow.jpg");
+
+  FloatImage res1 = removeNSeams(im, 50, true, false, true);
+  res1.write(DATA_DIR "/output/exampleForwardEnergy.png");
+
+  FloatImage res2 = removeNSeams(im, 50, true, false, false);
+  res2.write(DATA_DIR "/output/exampleNoForwardEnergy.png");
+}
+
+void starryNightEnergy()
+{
+  FloatImage im("data/input/starryNight.jpg");
+
+  FloatImage energy = gradientMagnitude(im);
+  energy.write(DATA_DIR "/output/starryNightEnergy.png");
+}
+
+void removeNVertExample()
+{
+  FloatImage im("data/input/dali.jpg");
+
+  FloatImage res = removeNSeams(im, 150, true, false, true);
+  res.write(DATA_DIR "/output/removeNVertExample.png");
 }
 
 int main()
 {
   //testMinPathHorizontal();
-  //testMinPathVert();
+  testMinPathVert();
   //testRemoveNVert();
   //testRemoveNHorizontal();
   //testRetargetImage();
-  trimIdiots();
+  //forwardEnergyExamples();
+  //starryNightEnergy();
+  //removeNVertExample();
 }
