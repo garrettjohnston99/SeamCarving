@@ -16,6 +16,10 @@ void testMinPathVert()
 
   FloatImage out = minPathVert(test);
   out.write(DATA_DIR "/output/daliOutVert.png");
+
+  FloatImage test2("data/input/minPathTestIn.png");
+  FloatImage out2 = minPathVert(test2);
+  out2.write(DATA_DIR "/output/minPathTestOut.png");
 }
 
 void testMinPathHorizontal()
@@ -93,11 +97,11 @@ void removeNVertExample()
 int main()
 {
   //testMinPathHorizontal();
-  //testMinPathVert();
+  testMinPathVert();
   //testRemoveNVert();
   //testRemoveNHorizontal();
   //testRetargetImage();
-  forwardEnergyExamples();
+  //forwardEnergyExamples();
   //starryNightEnergy();
   //removeNVertExample();
 }
